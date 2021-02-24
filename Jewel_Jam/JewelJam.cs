@@ -1,18 +1,28 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.Text.Encodings.Web;
+using System;
 
 namespace Jewel_Jam
 {
     public class JewelJam : Game
     {
+        private const int GridWidth = 5;
+        private const int GridHeight = 10;
+        private const int CellSize = 85;
+
+        // Vector2 is not allowed to be a constant
+        private readonly Vector2 GridOffset = new Vector2(85, 150);
+
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
         private Point worldSize, windowSize;
         private InputHelper inputHelper;
-        private Texture2D background, cursorSprite;
+        private Texture2D background;
+        private Texture2D[] jewels;
         private Matrix spriteScale;
+        private int[,] grid;
+        private static Random random;
 
         private bool FullScreen
         {
@@ -26,13 +36,23 @@ namespace Jewel_Jam
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             inputHelper = new InputHelper();
+            grid = new int[GridWidth, GridHeight];
+            random = new Random();
+
+            for (int x = 0; x < GridWidth; x++)
+                for (int y = 0; y < GridHeight; y++)
+                    grid[x, y] = random.Next(3);
         }
 
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             background = Content.Load<Texture2D>("spr_background");
-            cursorSprite = Content.Load<Texture2D>("spr_double");
+
+            jewels = new Texture2D[3];
+            jewels[0] = Content.Load<Texture2D>("spr_single_jewel1");
+            jewels[1] = Content.Load<Texture2D>("spr_single_jewel2");
+            jewels[2] = Content.Load<Texture2D>("spr_single_jewel3");
 
             worldSize = new Point(background.Width, background.Height);
             windowSize = new Point(1024, 768);
@@ -54,10 +74,17 @@ namespace Jewel_Jam
             GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, spriteScale);
             spriteBatch.Draw(background, Vector2.Zero, Color.White);
-            spriteBatch.Draw(cursorSprite, ScreenToWorld(inputHelper.MousePosition), Color.White);
+
+            // Drawing the grid
+            for (int x = 0; x < GridWidth; x++)
+                for (int y = 0; y < GridHeight; y++)
+                {
+                    Vector2 position = GridOffset + new Vector2(x, y) * CellSize;
+                    spriteBatch.Draw(jewels[grid[x, y]], position, Color.White);
+                }
+
             spriteBatch.End();
         }
-
 
         /// <summary>
         /// Changes the resolution to full screen or windowed mode
@@ -82,7 +109,7 @@ namespace Jewel_Jam
                 screenSize = windowSize;
             }
 
-            // Changes screen size 
+            // Changes screen size
             graphics.PreferredBackBufferWidth = screenSize.X;
             graphics.PreferredBackBufferHeight = screenSize.Y;
             graphics.ApplyChanges();
