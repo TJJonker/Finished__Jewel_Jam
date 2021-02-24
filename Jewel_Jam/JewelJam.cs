@@ -67,6 +67,8 @@ namespace Jewel_Jam
                 FullScreen = !FullScreen;
             if (inputHelper.KeyPressed(Keys.Escape))
                 Exit();
+            if (inputHelper.KeyPressed(Keys.Space))
+                MoveRowsDown();
         }
 
         protected override void Draw(GameTime gameTime)
@@ -168,6 +170,21 @@ namespace Jewel_Jam
 
             // Returns position in GameWorld
             return (screenPosition - viewportTopLeft) * screenToWorldScale;
+        }
+
+        /// <summary>
+        /// Deletes the bottom row of the grid and spawns a new row on top
+        /// </summary>
+        private void MoveRowsDown()
+        {
+            // Replaces all the Jewels with the Jewel above them
+            for(int y = GridHeight - 1; y > 0; y--)
+                for(int x = 0; x < GridWidth; x++)
+                    grid[x, y] = grid[x, y - 1];
+            
+            // Fills top row with new Jewels
+            for (int x = 0; x < GridWidth; x++)
+                grid[x, 0] = random.Next(3);
         }
     }
 }
