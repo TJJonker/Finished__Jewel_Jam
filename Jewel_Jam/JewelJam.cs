@@ -49,7 +49,7 @@ namespace Jewel_Jam
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.White);
+            GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, spriteScale);
             spriteBatch.Draw(background, Vector2.Zero, Color.White);
             spriteBatch.End();
@@ -74,7 +74,32 @@ namespace Jewel_Jam
             graphics.PreferredBackBufferWidth = screenSize.X;
             graphics.PreferredBackBufferHeight = screenSize.Y;
             graphics.ApplyChanges();
-            spriteScale = Matrix.CreateScale((float)screenSize.X / worldSize.X, (float)screenSize.Y / worldSize.Y, 1);
+            GraphicsDevice.Viewport = CalculateViewport(screenSize);
+            spriteScale = Matrix.CreateScale(
+                (float)GraphicsDevice.Viewport.Width / worldSize.X,
+                (float)GraphicsDevice.Viewport.Height / worldSize.Y, 1);
+        }
+
+        private Viewport CalculateViewport(Point windowSize)
+        {
+            Viewport viewport = new Viewport();
+            float gameAspectRatio = (float)worldSize.X / worldSize.X;
+            float windowAspectRatio = (float)windowSize.X / windowSize.Y;
+            if (windowAspectRatio > gameAspectRatio)
+            {
+                viewport.Width = (int)(windowSize.Y * gameAspectRatio);
+                viewport.Height = windowSize.Y;
+            }
+            else
+            {
+                viewport.Width = windowSize.X;
+                viewport.Height = (int)(windowAspectRatio / gameAspectRatio);
+            }
+
+            viewport.X = (windowSize.X - viewport.Width) / 2;
+            viewport.Y = (windowSize.Y - viewport.Height) / 2;
+
+            return viewport;
         }
     }
 }
