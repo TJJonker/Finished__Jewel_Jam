@@ -5,7 +5,7 @@ using System;
 
 namespace Jewel_Jam
 {
-    public class JewelJam : Game
+    internal class JewelJam : ExtendedGame
     {
         private const int GridWidth = 5;
         private const int GridHeight = 10;
@@ -14,35 +14,26 @@ namespace Jewel_Jam
         // Vector2 is not allowed to be a constant
         private readonly Vector2 GridOffset = new Vector2(85, 150);
 
-        private GraphicsDeviceManager graphics;
-        private SpriteBatch spriteBatch;
-        private Point worldSize, windowSize;
-        private InputHelper inputHelper;
         private Texture2D background;
         private Texture2D[] jewels;
-        private Matrix spriteScale;
         private int[,] grid;
-        private static Random random;
 
 
 
         public JewelJam()
         {
-            graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            inputHelper = new InputHelper();
             grid = new int[GridWidth, GridHeight];
-            random = new Random();
 
             for (int x = 0; x < GridWidth; x++)
                 for (int y = 0; y < GridHeight; y++)
-                    grid[x, y] = random.Next(3);
+                    grid[x, y] = Random.Next(3);
         }
 
         protected override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            base.LoadContent();
+
             background = Content.Load<Texture2D>("spr_background");
 
             jewels = new Texture2D[3];
@@ -51,18 +42,14 @@ namespace Jewel_Jam
             jewels[2] = Content.Load<Texture2D>("spr_single_jewel3");
 
             worldSize = new Point(background.Width, background.Height);
-            windowSize = new Point(1024, 768);
 
             FullScreen = false;
         }
 
         protected override void Update(GameTime gameTime)
         {
-            inputHelper.Update();
-            if (inputHelper.KeyPressed(Keys.F5))
-                FullScreen = !FullScreen;
-            if (inputHelper.KeyPressed(Keys.Escape))
-                Exit();
+            base.Update(gameTime);
+
             if (inputHelper.KeyPressed(Keys.Space))
                 MoveRowsDown();
         }
@@ -98,7 +85,7 @@ namespace Jewel_Jam
             
             // Fills top row with new Jewels
             for (int x = 0; x < GridWidth; x++)
-                grid[x, 0] = random.Next(3);
+                grid[x, 0] = Random.Next(3);
         }
     }
 }
