@@ -1,12 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Jewel_Jam
 {
-    class GameObject
+    internal class GameObject
     {
         public Vector2 Position { get; set; }
         protected Vector2 velocity;
@@ -20,12 +17,19 @@ namespace Jewel_Jam
             Visible = true;
         }
 
-        public virtual void HandleInput(InputHelper inputHelper) { }
+        public virtual void HandleInput(InputHelper inputHelper)
+        {
+        }
+
         public virtual void Update(GameTime gameTime)
         {
             Position += velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
-        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch) { }
+
+        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+        }
+
         public virtual void Reset()
         {
             velocity = Vector2.Zero;
