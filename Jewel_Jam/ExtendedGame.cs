@@ -15,7 +15,7 @@ namespace Jewel_Jam
         protected Point worldSize;
         protected Point windowSize;
         protected Matrix spriteScale;
-        protected List<GameObject> gameWorld;
+        protected GameObjectList gameWorld;
 
         public static Random Random { get; private set; }
         public static ContentManager ContentManager { get; private set; }
@@ -43,15 +43,13 @@ namespace Jewel_Jam
             spriteBatch = new SpriteBatch(GraphicsDevice);
             ContentManager = Content;
             FullScreen = false;
-            gameWorld = new List<GameObject>();
+            gameWorld = new GameObjectList();
         }
 
         protected override void Update(GameTime gameTime)
         {
-            foreach (GameObject obj in gameWorld)
-                obj.Update(gameTime);
-
             HandleInput();
+            gameWorld.Update(gameTime);
         }
 
         protected virtual void HandleInput()
@@ -63,8 +61,7 @@ namespace Jewel_Jam
             if (inputHelper.KeyPressed(Keys.F5))
                 FullScreen = !FullScreen;
 
-            foreach (GameObject obj in gameWorld)
-                obj.HandleInput(inputHelper);
+            gameWorld.HandleInput(inputHelper);
         }
 
         protected override void Draw(GameTime gameTime)
@@ -73,8 +70,7 @@ namespace Jewel_Jam
 
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, spriteScale);
 
-            foreach (GameObject obj in gameWorld)
-                obj.Draw(gameTime, spriteBatch);
+            gameWorld.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
         }

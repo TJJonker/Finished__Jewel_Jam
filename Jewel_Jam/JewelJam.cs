@@ -21,10 +21,10 @@ namespace Jewel_Jam
             base.LoadContent();
 
             SpriteGameObject background = new SpriteGameObject("spr_background");
-            gameWorld.Add(background);
+            gameWorld.AddChild(background);
 
             jewelGrid = new JewelGrid(GridWidth, GridHeight, CellSize, GridOffset);
-            gameWorld.Add(jewelGrid);
+            gameWorld.AddChild(jewelGrid);
 
             worldSize = new Point(background.Width, background.Height);
 

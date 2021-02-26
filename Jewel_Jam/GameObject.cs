@@ -17,7 +17,7 @@ namespace Jewel_Jam
             {
                 if (Parent == null)
                     return Position;
-                return Parent.Position + Position;
+                return Parent.GlobalPosition + Position;
             }
         }
 
