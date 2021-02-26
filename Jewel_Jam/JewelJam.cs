@@ -14,11 +14,8 @@ namespace Jewel_Jam
         // Vector2 is not allowed to be a constant
         private readonly Vector2 GridOffset = new Vector2(85, 150);
 
-        private Texture2D background;
         private Texture2D[] jewels;
         private int[,] grid;
-
-
 
         public JewelJam()
         {
@@ -34,7 +31,8 @@ namespace Jewel_Jam
         {
             base.LoadContent();
 
-            background = Content.Load<Texture2D>("spr_background");
+            SpriteGameObject background = new SpriteGameObject("spr_background");
+            gameWorld.Add(background);
 
             jewels = new Texture2D[3];
             jewels[0] = Content.Load<Texture2D>("spr_single_jewel1");
@@ -71,18 +69,16 @@ namespace Jewel_Jam
             spriteBatch.End();
         }
 
-        
-
         /// <summary>
         /// Deletes the bottom row of the grid and spawns a new row on top
         /// </summary>
         private void MoveRowsDown()
         {
             // Replaces all the Jewels with the Jewel above them
-            for(int y = GridHeight - 1; y > 0; y--)
-                for(int x = 0; x < GridWidth; x++)
+            for (int y = GridHeight - 1; y > 0; y--)
+                for (int x = 0; x < GridWidth; x++)
                     grid[x, y] = grid[x, y - 1];
-            
+
             // Fills top row with new Jewels
             for (int x = 0; x < GridWidth; x++)
                 grid[x, 0] = Random.Next(3);
