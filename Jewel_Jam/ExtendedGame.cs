@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Generic;
 
 namespace Jewel_Jam
 {
@@ -14,9 +15,11 @@ namespace Jewel_Jam
         protected Point worldSize;
         protected Point windowSize;
         protected Matrix spriteScale;
+        protected List<GameObject> gameWorld;
 
         public static Random Random { get; private set; }
         public static ContentManager ContentManager { get; private set; }
+
         public bool FullScreen
         {
             get { return graphics.IsFullScreen; }
@@ -40,20 +43,40 @@ namespace Jewel_Jam
             spriteBatch = new SpriteBatch(GraphicsDevice);
             ContentManager = Content;
             FullScreen = false;
+            gameWorld = new List<GameObject>();
         }
 
         protected override void Update(GameTime gameTime)
         {
+            foreach (GameObject obj in gameWorld)
+                obj.Update(gameTime);
+
             HandleInput();
         }
 
         protected virtual void HandleInput()
         {
             inputHelper.Update();
+
             if (inputHelper.KeyPressed(Keys.Escape))
                 Exit();
             if (inputHelper.KeyPressed(Keys.F5))
                 FullScreen = !FullScreen;
+
+            foreach (GameObject obj in gameWorld)
+                obj.HandleInput(inputHelper);
+        }
+
+        protected override void Draw(GameTime gameTime)
+        {
+            GraphicsDevice.Clear(Color.Black);
+
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, spriteScale);
+
+            foreach (GameObject obj in gameWorld)
+                obj.Draw(gameTime, spriteBatch);
+
+            spriteBatch.End();
         }
 
         /// <summary>
