@@ -26,7 +26,7 @@ namespace Jewel_Jam
             get
             {
                 Rectangle spriteBounds = sprite.Bounds;
-                spriteBounds.Offset(Position - origin);
+                spriteBounds.Offset(GlobalPosition - origin);
                 return spriteBounds;
             }
         }
@@ -34,7 +34,7 @@ namespace Jewel_Jam
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             if (Visible)
-                spriteBatch.Draw(sprite, Position, null, Color.White, 0, origin, 1.0f, SpriteEffects.None, 0);
+                spriteBatch.Draw(sprite, GlobalPosition, null, Color.White, 0, origin, 1.0f, SpriteEffects.None, 0);
         }
     }
 }

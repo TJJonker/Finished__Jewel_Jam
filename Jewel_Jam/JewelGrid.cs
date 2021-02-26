@@ -26,8 +26,11 @@ namespace Jewel_Jam
             for (int x = 0; x < gridWidth; x++)
                 for (int y = 0; y < gridHeight; y++)
                 {
-                    grid[x, y] = new Jewel(ExtendedGame.Random.Next(3));
-                    grid[x, y].Position = GetCellPosition(x, y);
+                    grid[x, y] = new Jewel(ExtendedGame.Random.Next(3))
+                    {
+                        Position = GetCellPosition(x, y),
+                        Parent = this
+                    };
                 }
         }
 
@@ -53,14 +56,17 @@ namespace Jewel_Jam
             // Fills top row with new Jewels
             for (int x = 0; x < gridWidth; x++)
             {
-                grid[x, 0] = new Jewel(ExtendedGame.Random.Next(3));
-                grid[x, 0].Position = GetCellPosition(x, 0);
+                grid[x, 0] = new Jewel(ExtendedGame.Random.Next(3))
+                {
+                    Position = GetCellPosition(x, 0),
+                    Parent = this
+                };
             }
         }
 
         private Vector2 GetCellPosition(int x, int y)
         {
-            return Position + new Vector2(x * cellSize, y * cellSize);
+            return new Vector2(x * cellSize, y * cellSize);
         }
 
         public override void HandleInput(InputHelper inputHelper)

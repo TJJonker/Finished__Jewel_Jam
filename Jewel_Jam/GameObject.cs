@@ -9,6 +9,17 @@ namespace Jewel_Jam
         protected Vector2 velocity;
 
         public bool Visible { get; set; }
+        public GameObject Parent { get; set; }
+
+        public Vector2 GlobalPosition
+        {
+            get
+            {
+                if (Parent == null)
+                    return Position;
+                return Parent.Position + Position;
+            }
+        }
 
         public GameObject()
         {
