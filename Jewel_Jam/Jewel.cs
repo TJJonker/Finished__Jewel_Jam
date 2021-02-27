@@ -13,6 +13,8 @@ namespace Jewel_Jam
 
         Rectangle spriteRectangle;
 
+        GlitterField glitters;
+
         public Jewel() : base("spr_jewels")
         {
             ColorType = ExtendedGame.Random.Next(3);
@@ -23,11 +25,16 @@ namespace Jewel_Jam
             spriteRectangle = new Rectangle(index * sprite.Height, 0, sprite.Height, sprite.Height);
 
             TargetPosition = Vector2.Zero;
+
+            glitters = new GlitterField(sprite, 2, spriteRectangle);
+            glitters.Parent = this;
+            glitters.Position = -spriteRectangle.Location.ToVector2();
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(sprite, GlobalPosition, spriteRectangle, Color.White);
+            glitters.Draw(gameTime, spriteBatch);
         }
 
         public override void Update(GameTime gameTime)
@@ -35,6 +42,7 @@ namespace Jewel_Jam
             Vector2 diff = TargetPosition - Position;
             velocity = diff * 8;
             base.Update(gameTime);
+            glitters.Update(gameTime);
         }
 
     }

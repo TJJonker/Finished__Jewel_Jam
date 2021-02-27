@@ -61,6 +61,7 @@ namespace Jewel_Jam
 
             int mid = Width / 2;
             int extraScore = 10;
+            int combo = 0;
 
             for (int y = 0; y < Height - 2; y++)
             {
@@ -70,10 +71,15 @@ namespace Jewel_Jam
                     RemoveJewel(mid, y + 1, -2);
                     RemoveJewel(mid, y + 2, -3);
                     y += 2;
+                    combo++;
                     JewelJam.GameWorld.AddScore(extraScore);
                     extraScore *= 2;
                 }
             }
+            if (combo == 2)
+                JewelJam.GameWorld.DoubleComboScored();
+            else if (combo == 3)
+                JewelJam.GameWorld.TripleComboScored();
         }
         
         private void RemoveJewel(int x, int y, int yStartForNewJewel)

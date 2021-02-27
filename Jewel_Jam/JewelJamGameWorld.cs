@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using System.Threading;
 
 namespace Jewel_Jam
 {
@@ -14,6 +15,8 @@ namespace Jewel_Jam
 
         private JewelCart jewelCart;
         private SpriteGameObject titleScreen, gameOverScreen, helpScreen, helpButton;
+
+        private VisibilityTimer timer_double, timer_triple;
 
         private const int GridWidth = 5;
         private const int GridHeight = 10;
@@ -58,6 +61,9 @@ namespace Jewel_Jam
             helpButton = new SpriteGameObject("spr_button_help");
             helpButton.Position = new Vector2(1270, 20);
             AddChild(helpButton);
+
+            timer_double = AddComboImageWithTimer("spr_double");
+            timer_triple = AddComboImageWithTimer("spr_triple");
 
             titleScreen = AddOverlay("spr_title");
             gameOverScreen = AddOverlay("spr_gameover");
@@ -131,6 +137,29 @@ namespace Jewel_Jam
                     GoToState(GameState.Playing);
                 }
             }
+        }
+
+        private VisibilityTimer AddComboImageWithTimer(string spriteName)
+        {
+            SpriteGameObject image = new SpriteGameObject(spriteName);
+            image.Visible = false;
+            image.Position = new Vector2(800, 400);
+            AddChild(image);
+
+            VisibilityTimer timer = new VisibilityTimer(image);
+            AddChild(timer);
+
+            return timer;
+        }
+
+        public void DoubleComboScored()
+        {
+            timer_double.StartVisible(3);
+        }
+
+        public void TripleComboScored()
+        {
+            timer_triple.StartVisible(3);
         }
     }
 }
