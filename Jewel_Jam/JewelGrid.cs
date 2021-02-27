@@ -29,7 +29,7 @@ namespace Jewel_Jam
             for (int x = 0; x < Width; x++)
                 for (int y = 0; y < Height; y++)
                 {
-                    grid[x, y] = new Jewel(ExtendedGame.Random.Next(3))
+                    grid[x, y] = new Jewel()
                     {
                         Position = GetCellPosition(x, y),
                         Parent = this
@@ -59,7 +59,7 @@ namespace Jewel_Jam
             // Fills top row with new Jewels
             for (int x = 0; x < Width; x++)
             {
-                grid[x, 0] = new Jewel(ExtendedGame.Random.Next(3))
+                grid[x, 0] = new Jewel()
                 {
                     Position = GetCellPosition(x, 0),
                     Parent = this
