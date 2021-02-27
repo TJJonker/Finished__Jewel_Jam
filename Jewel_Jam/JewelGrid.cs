@@ -44,30 +44,6 @@ namespace Jewel_Jam
         }
 
         /// <summary>
-        /// Deletes the bottom row of the grid and spawns a new row on top
-        /// </summary>
-        private void MoveRowsDown()
-        {
-            // Replaces all the Jewels with the Jewel above them
-            for (int y = Height - 1; y > 0; y--)
-                for (int x = 0; x < Width; x++)
-                {
-                    grid[x, y] = grid[x, y - 1];
-                    grid[x, y].Position = GetCellPosition(x, y);
-                }
-
-            // Fills top row with new Jewels
-            for (int x = 0; x < Width; x++)
-            {
-                grid[x, 0] = new Jewel()
-                {
-                    Position = GetCellPosition(x, 0),
-                    Parent = this
-                };
-            }
-        }
-
-        /// <summary>
         /// Returns position based on cellsize
         /// </summary>
         /// <param name="x">X position on the grid</param>
@@ -80,10 +56,44 @@ namespace Jewel_Jam
 
         public override void HandleInput(InputHelper inputHelper)
         {
-            if (inputHelper.KeyPressed(Keys.Space))
-                MoveRowsDown();
+            if (!inputHelper.KeyPressed(Keys.Space))
+                return;
+
+            int mid = Width / 2;
+
+            for (int y = 0; y < Height - 2; y++)
+            {
+                if(IsValidCombination(grid[mid, y], grid[mid, y + 1], grid[mid, y + 2]))
+                {
+                    RemoveJewel(mid, y);
+                    RemoveJewel(mid, y + 1);
+                    RemoveJewel(mid, y + 2);
+                    y += 2;
+                }
+            }
         }
         
+        private void RemoveJewel(int x, int y)
+        {
+            for (int row = y; row > 0; row--)
+            {
+                grid[x, row] = grid[x, row - 1];
+                grid[x, row].Position = GetCellPosition(x, row);
+            }
+
+            AddJewel(x, 0);
+        }
+
+        private void AddJewel(int x, int y)
+        {
+            grid[x, y] = new Jewel()
+            {
+                Position = GetCellPosition(x, y),
+                Parent = this
+            };
+
+
+        }
 
         public void ShiftRowLeft(int selectedRow)
         {
