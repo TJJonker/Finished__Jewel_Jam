@@ -1,14 +1,21 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 namespace Jewel_Jam
 {
     internal class JewelJamGameWorld : GameObjectList
     {
-        JewelCart jewelCart;
+        private enum GameState
+        { TitleScreen, Playing, HelpScreen, GameOver }
 
-        const int GridWidth = 5;
-        const int GridHeight = 10;
-        const int CellSize = 85;
+        private GameState currentState;
+
+        private JewelCart jewelCart;
+        private SpriteGameObject titleScreen, gameOverScreen, helpScreen;
+
+        private const int GridWidth = 5;
+        private const int GridHeight = 10;
+        private const int CellSize = 85;
 
         public Point Size { get; private set; }
         public int Score { get; private set; }
@@ -44,7 +51,11 @@ namespace Jewel_Jam
             jewelCart = new JewelCart(new Vector2(410, 230));
             AddChild(jewelCart);
 
-            Reset();
+            titleScreen = AddOverlay("spr_title");
+            gameOverScreen = AddOverlay("spr_gameover");
+            helpScreen = AddOverlay("spr_frame_help");
+
+            GoToState(GameState.TitleScreen);
         }
 
         public void AddScore(int points)
@@ -59,5 +70,55 @@ namespace Jewel_Jam
             Score = 0;
         }
 
+        public SpriteGameObject AddOverlay(string sprite)
+        {
+            SpriteGameObject result = new SpriteGameObject(sprite);
+            result.SetOriginToCenter();
+            result.Position = new Vector2(Size.X / 2, Size.Y / 2);
+            AddChild(result);
+
+            return result;
+        }
+
+        private void GoToState(GameState newState)
+        {
+            currentState = newState;
+            titleScreen.Visible = currentState == GameState.TitleScreen;
+            helpScreen.Visible = currentState == GameState.HelpScreen;
+            gameOverScreen.Visible = currentState == GameState.GameOver;
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            if (currentState == GameState.Playing)
+            {
+                base.Update(gameTime);
+                if (jewelCart.GlobalPosition.X > Size.X - 230)
+                    GoToState(GameState.GameOver);
+            }
+        }
+
+        public override void HandleInput(InputHelper inputHelper)
+        {
+            if (currentState == GameState.Playing)
+            {
+                base.HandleInput(inputHelper);
+            }
+            else if (currentState == GameState.TitleScreen || currentState == GameState.GameOver)
+            {
+                if (inputHelper.KeyPressed(Keys.Space))
+                {
+                    Reset();
+                    GoToState(GameState.Playing);
+                }
+            }
+            else if (currentState == GameState.HelpScreen)
+            {
+                if (inputHelper.KeyPressed(Keys.Space))
+                {
+                    GoToState(GameState.Playing);
+                }
+            }
+        }
     }
 }

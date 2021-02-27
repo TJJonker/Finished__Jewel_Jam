@@ -4,7 +4,6 @@ namespace Jewel_Jam
 {
     internal class JewelJam : ExtendedGame
     {
-
         public JewelJam()
         {
             IsMouseVisible = true;

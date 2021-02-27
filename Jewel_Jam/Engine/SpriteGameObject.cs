@@ -36,5 +36,10 @@ namespace Jewel_Jam
             if (Visible)
                 spriteBatch.Draw(sprite, GlobalPosition, null, Color.White, 0, origin, 1.0f, SpriteEffects.None, 0);
         }
+
+        public void SetOriginToCenter()
+        {
+            origin = new Vector2(Width / 2, Height / 2);
+        }
     }
 }
