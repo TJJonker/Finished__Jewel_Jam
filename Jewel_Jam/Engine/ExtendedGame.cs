@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-using System.Collections.Generic;
 
 namespace Jewel_Jam
 {
@@ -15,7 +14,7 @@ namespace Jewel_Jam
         protected Point worldSize;
         protected Point windowSize;
         protected Matrix spriteScale;
-        protected GameObjectList gameWorld;
+        protected static GameObjectList gameWorld;
 
         public static Random Random { get; private set; }
         public static ContentManager ContentManager { get; private set; }

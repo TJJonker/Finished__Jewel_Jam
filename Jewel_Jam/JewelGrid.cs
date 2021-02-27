@@ -69,6 +69,7 @@ namespace Jewel_Jam
                     RemoveJewel(mid, y + 1);
                     RemoveJewel(mid, y + 2);
                     y += 2;
+                    JewelJam.GameWorld.AddScore(10);
                 }
             }
         }
