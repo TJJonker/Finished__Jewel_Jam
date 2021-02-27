@@ -9,8 +9,6 @@ namespace Jewel_Jam
         private const int CellSize = 85;
         private Vector2 GridOffset = new Vector2(85, 150);
 
-        private JewelGrid jewelGrid;
-
         public JewelJam()
         {
             IsMouseVisible = true;
@@ -23,8 +21,18 @@ namespace Jewel_Jam
             SpriteGameObject background = new SpriteGameObject("spr_background");
             gameWorld.AddChild(background);
 
-            jewelGrid = new JewelGrid(GridWidth, GridHeight, CellSize, GridOffset);
-            gameWorld.AddChild(jewelGrid);
+            // Create PlayingField and add it do gameWorld
+            GameObjectList playingField = new GameObjectList();
+            playingField.Position = GridOffset;
+            gameWorld.AddChild(playingField);
+
+            // Create new grid and add it to playingField
+            JewelGrid grid = new JewelGrid(GridWidth, GridHeight, CellSize);
+            playingField.AddChild(grid);
+
+            // Create new RowSelector and add it to playingField
+            playingField.AddChild(new RowSelector(grid));
+
 
             worldSize = new Point(background.Width, background.Height);
 

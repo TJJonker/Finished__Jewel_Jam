@@ -9,12 +9,11 @@ namespace Jewel_Jam
         private Jewel[,] grid;
         private int gridWidth, gridHeight, cellSize;
 
-        public JewelGrid(int width, int height, int cellSize, Vector2 offset)
+        public JewelGrid(int width, int height, int cellSize)
         {
             gridWidth = width;
             gridHeight = height;
             this.cellSize = cellSize;
-            Position = offset;
 
             Reset();
         }
