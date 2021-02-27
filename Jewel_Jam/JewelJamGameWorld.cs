@@ -10,8 +10,10 @@ namespace Jewel_Jam
 
         private GameState currentState;
 
+        private JewelJam game;
+
         private JewelCart jewelCart;
-        private SpriteGameObject titleScreen, gameOverScreen, helpScreen;
+        private SpriteGameObject titleScreen, gameOverScreen, helpScreen, helpButton;
 
         private const int GridWidth = 5;
         private const int GridHeight = 10;
@@ -20,8 +22,10 @@ namespace Jewel_Jam
         public Point Size { get; private set; }
         public int Score { get; private set; }
 
-        public JewelJamGameWorld()
+        public JewelJamGameWorld(JewelJam game)
         {
+            this.game = game;
+
             SpriteGameObject background = new SpriteGameObject("spr_background");
             Size = new Point(background.Width, background.Height);
             AddChild(background);
@@ -50,6 +54,10 @@ namespace Jewel_Jam
 
             jewelCart = new JewelCart(new Vector2(410, 230));
             AddChild(jewelCart);
+
+            helpButton = new SpriteGameObject("spr_button_help");
+            helpButton.Position = new Vector2(1270, 20);
+            AddChild(helpButton);
 
             titleScreen = AddOverlay("spr_title");
             gameOverScreen = AddOverlay("spr_gameover");
@@ -103,6 +111,10 @@ namespace Jewel_Jam
             if (currentState == GameState.Playing)
             {
                 base.HandleInput(inputHelper);
+                if (inputHelper.MouseLeftButtonPressed() && helpButton.BoundingBox.Contains(game.ScreenToWorld(inputHelper.MousePosition)))
+                {
+                    GoToState(GameState.HelpScreen);
+                }
             }
             else if (currentState == GameState.TitleScreen || currentState == GameState.GameOver)
             {

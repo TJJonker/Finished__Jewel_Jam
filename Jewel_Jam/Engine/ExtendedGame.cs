@@ -146,7 +146,7 @@ namespace Jewel_Jam
         /// </summary>
         /// <param name="screenPosition"> Position on screen </param>
         /// <returns></returns>
-        private Vector2 ScreenToWorld(Vector2 screenPosition)
+        public Vector2 ScreenToWorld(Vector2 screenPosition)
         {
             // Takes top left position of the game window
             Vector2 viewportTopLeft = new Vector2(GraphicsDevice.Viewport.X, GraphicsDevice.Viewport.Y);

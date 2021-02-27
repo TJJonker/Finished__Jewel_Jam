@@ -18,7 +18,7 @@ namespace Jewel_Jam
         {
             base.LoadContent();
 
-            gameWorld = new JewelJamGameWorld();
+            gameWorld = new JewelJamGameWorld(this);
     
             worldSize = GameWorld.Size;
 
