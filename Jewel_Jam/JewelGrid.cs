@@ -28,19 +28,19 @@ namespace Jewel_Jam
 
             for (int x = 0; x < Width; x++)
                 for (int y = 0; y < Height; y++)
-                {
-                    grid[x, y] = new Jewel()
-                    {
-                        Position = GetCellPosition(x, y),
-                        Parent = this
-                    };
-                }
+                    AddJewel(x, y, y);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             foreach (Jewel jewel in grid)
                 jewel.Draw(gameTime, spriteBatch);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            foreach (Jewel jewel in grid)
+                jewel.Update(gameTime);
         }
 
         /// <summary>
@@ -66,9 +66,9 @@ namespace Jewel_Jam
             {
                 if(IsValidCombination(grid[mid, y], grid[mid, y + 1], grid[mid, y + 2]))
                 {
-                    RemoveJewel(mid, y);
-                    RemoveJewel(mid, y + 1);
-                    RemoveJewel(mid, y + 2);
+                    RemoveJewel(mid, y, -1);
+                    RemoveJewel(mid, y + 1, -2);
+                    RemoveJewel(mid, y + 2, -3);
                     y += 2;
                     JewelJam.GameWorld.AddScore(extraScore);
                     extraScore *= 2;
@@ -76,23 +76,24 @@ namespace Jewel_Jam
             }
         }
         
-        private void RemoveJewel(int x, int y)
+        private void RemoveJewel(int x, int y, int yStartForNewJewel)
         {
             for (int row = y; row > 0; row--)
             {
                 grid[x, row] = grid[x, row - 1];
-                grid[x, row].Position = GetCellPosition(x, row);
+                grid[x, row].TargetPosition = GetCellPosition(x, row);
             }
 
-            AddJewel(x, 0);
+            AddJewel(x, 0, yStartForNewJewel);
         }
 
-        private void AddJewel(int x, int y)
+        private void AddJewel(int x, int yTarget, int yStart)
         {
-            grid[x, y] = new Jewel()
+            grid[x, yTarget] = new Jewel()
             {
-                Position = GetCellPosition(x, y),
-                Parent = this
+                Position = GetCellPosition(x, yStart),
+                Parent = this,
+                TargetPosition = GetCellPosition(x, yTarget)
             };
 
 
@@ -107,12 +108,13 @@ namespace Jewel_Jam
             for (int x = 0; x < Width - 1; x++)
             {
                 grid[x, selectedRow] = grid[x + 1, selectedRow];
-                grid[x, selectedRow].Position = GetCellPosition(x, selectedRow);
+                grid[x, selectedRow].TargetPosition = GetCellPosition(x, selectedRow);
             }
 
             // Re-insert the backup Jewel in the Right most spot
             grid[Width - 1, selectedRow] = first;
-            grid[Width - 1, selectedRow].Position = GetCellPosition(Width - 1, selectedRow);
+            grid[Width - 1, selectedRow].Position = GetCellPosition(Width, selectedRow);
+            grid[Width - 1, selectedRow].TargetPosition = GetCellPosition(Width - 1, selectedRow);
         }
 
         public void ShiftRowRight(int selectedRow)
@@ -124,12 +126,13 @@ namespace Jewel_Jam
             for(int x = Width - 1; x > 0; x--)
             {
                 grid[x, selectedRow] = grid[x - 1, selectedRow];
-                grid[x, selectedRow].Position = GetCellPosition(x, selectedRow);
+                grid[x, selectedRow].TargetPosition = GetCellPosition(x, selectedRow);
             }
 
             // Replace the left most jewel with the backup
             grid[0, selectedRow] = first;
-            grid[0, selectedRow].Position = GetCellPosition(0, selectedRow);
+            grid[0, selectedRow].Position = GetCellPosition(-1, selectedRow);
+            grid[0, selectedRow].TargetPosition = GetCellPosition(0, selectedRow);
         }
 
         private bool IsValidCombination(Jewel a, Jewel b, Jewel c)

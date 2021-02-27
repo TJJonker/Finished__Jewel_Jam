@@ -9,6 +9,7 @@ namespace Jewel_Jam
         public int ColorType { get; private set; }
         public int ShapeType { get; private set; }
         public int NumberType { get; private set; }
+        public Vector2 TargetPosition { get; set; }
 
         Rectangle spriteRectangle;
 
@@ -20,11 +21,21 @@ namespace Jewel_Jam
 
             int index = 9 * ColorType + 3 * ShapeType + NumberType;
             spriteRectangle = new Rectangle(index * sprite.Height, 0, sprite.Height, sprite.Height);
+
+            TargetPosition = Vector2.Zero;
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(sprite, GlobalPosition, spriteRectangle, Color.White);
         }
+
+        public override void Update(GameTime gameTime)
+        {
+            Vector2 diff = TargetPosition - Position;
+            velocity = diff * 8;
+            base.Update(gameTime);
+        }
+
     }
 }
