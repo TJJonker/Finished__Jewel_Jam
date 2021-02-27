@@ -118,5 +118,27 @@ namespace Jewel_Jam
             grid[0, selectedRow] = first;
             grid[0, selectedRow].Position = GetCellPosition(0, selectedRow);
         }
+
+        private bool IsValidCombination(Jewel a, Jewel b, Jewel c)
+        {
+            return IsConditionValid(a.ShapeType, b.ShapeType, c.ShapeType)
+                && IsConditionValid(a.ColorType, b.ColorType, c.ColorType)
+                && IsConditionValid(a.NumberType, b.NumberType, c.NumberType);
+        }
+
+        private bool AllEqual(int a, int b, int c)
+        {
+            return a == b && b == c;
+        }
+
+        private bool AllDifferent(int a, int b, int c)
+        {
+            return a != b && b != c && c != a;
+        }
+
+        private bool IsConditionValid(int a, int b, int c)
+        {
+            return AllEqual(a, b, c) || AllDifferent(a, b, c);
+        }
     }
 }
