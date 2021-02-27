@@ -7,12 +7,15 @@ namespace Jewel_Jam
     internal class JewelGrid : GameObject
     {
         private Jewel[,] grid;
-        private int gridWidth, gridHeight, cellSize;
+        private int cellSize;
+
+        public int Height { get; private set; }
+        public int Width { get; private set; }
 
         public JewelGrid(int width, int height, int cellSize)
         {
-            gridWidth = width;
-            gridHeight = height;
+            Width = width;
+            Height = height;
             this.cellSize = cellSize;
 
             Reset();
@@ -20,10 +23,10 @@ namespace Jewel_Jam
 
         public override void Reset()
         {
-            grid = new Jewel[gridWidth, gridHeight];
+            grid = new Jewel[Width, Height];
 
-            for (int x = 0; x < gridWidth; x++)
-                for (int y = 0; y < gridHeight; y++)
+            for (int x = 0; x < Width; x++)
+                for (int y = 0; y < Height; y++)
                 {
                     grid[x, y] = new Jewel(ExtendedGame.Random.Next(3))
                     {
@@ -45,15 +48,15 @@ namespace Jewel_Jam
         private void MoveRowsDown()
         {
             // Replaces all the Jewels with the Jewel above them
-            for (int y = gridHeight - 1; y > 0; y--)
-                for (int x = 0; x < gridWidth; x++)
+            for (int y = Height - 1; y > 0; y--)
+                for (int x = 0; x < Width; x++)
                 {
                     grid[x, y] = grid[x, y - 1];
                     grid[x, y].Position = GetCellPosition(x, y);
                 }
 
             // Fills top row with new Jewels
-            for (int x = 0; x < gridWidth; x++)
+            for (int x = 0; x < Width; x++)
             {
                 grid[x, 0] = new Jewel(ExtendedGame.Random.Next(3))
                 {
@@ -63,7 +66,7 @@ namespace Jewel_Jam
             }
         }
 
-        private Vector2 GetCellPosition(int x, int y)
+        public Vector2 GetCellPosition(int x, int y)
         {
             return new Vector2(x * cellSize, y * cellSize);
         }

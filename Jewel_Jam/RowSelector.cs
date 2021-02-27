@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 namespace Jewel_Jam
 {
@@ -12,6 +13,17 @@ namespace Jewel_Jam
             this.grid = grid;
             selectedRow = 0;
             origin = new Vector2(10, 10);
+        }
+
+        public override void HandleInput(InputHelper inputHelper)
+        {
+            if (inputHelper.KeyPressed(Keys.Up))
+                selectedRow--;
+            if (inputHelper.KeyPressed(Keys.Down))
+                selectedRow++;
+
+            selectedRow = MathHelper.Clamp(selectedRow, 0, grid.Height - 1);
+            Position = grid.GetCellPosition(0, selectedRow);
         }
     }
 }
