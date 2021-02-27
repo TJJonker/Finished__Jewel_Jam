@@ -60,6 +60,7 @@ namespace Jewel_Jam
                 return;
 
             int mid = Width / 2;
+            int extraScore = 10;
 
             for (int y = 0; y < Height - 2; y++)
             {
@@ -69,7 +70,8 @@ namespace Jewel_Jam
                     RemoveJewel(mid, y + 1);
                     RemoveJewel(mid, y + 2);
                     y += 2;
-                    JewelJam.GameWorld.AddScore(10);
+                    JewelJam.GameWorld.AddScore(extraScore);
+                    extraScore *= 2;
                 }
             }
         }
