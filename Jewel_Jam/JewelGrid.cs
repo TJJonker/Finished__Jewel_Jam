@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Jewel_Jam
 {
@@ -66,6 +67,12 @@ namespace Jewel_Jam
             }
         }
 
+        /// <summary>
+        /// Returns position based on cellsize
+        /// </summary>
+        /// <param name="x">X position on the grid</param>
+        /// <param name="y">Y position on the grid</param>
+        /// <returns></returns>
         public Vector2 GetCellPosition(int x, int y)
         {
             return new Vector2(x * cellSize, y * cellSize);
@@ -75,6 +82,41 @@ namespace Jewel_Jam
         {
             if (inputHelper.KeyPressed(Keys.Space))
                 MoveRowsDown();
+        }
+        
+
+        public void ShiftRowLeft(int selectedRow)
+        {
+            // Store the left most Jewel for backup
+            Jewel first = grid[0, selectedRow];
+
+            // Replace all the Jewels with their right neighbour
+            for (int x = 0; x < Width - 1; x++)
+            {
+                grid[x, selectedRow] = grid[x + 1, selectedRow];
+                grid[x, selectedRow].Position = GetCellPosition(x, selectedRow);
+            }
+
+            // Re-insert the backup Jewel in the Right most spot
+            grid[Width - 1, selectedRow] = first;
+            grid[Width - 1, selectedRow].Position = GetCellPosition(Width - 1, selectedRow);
+        }
+
+        public void ShiftRowRight(int selectedRow)
+        {
+            // Store the right most Jewel for backup
+            Jewel first = grid[Width - 1, selectedRow];
+
+            // replace all the Jewel with their left neighbour
+            for(int x = Width - 1; x > 0; x--)
+            {
+                grid[x, selectedRow] = grid[x - 1, selectedRow];
+                grid[x, selectedRow].Position = GetCellPosition(x, selectedRow);
+            }
+
+            // Replace the left most jewel with the backup
+            grid[0, selectedRow] = first;
+            grid[0, selectedRow].Position = GetCellPosition(0, selectedRow);
         }
     }
 }

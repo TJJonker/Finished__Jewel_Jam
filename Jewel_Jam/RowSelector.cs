@@ -19,11 +19,16 @@ namespace Jewel_Jam
         {
             if (inputHelper.KeyPressed(Keys.Up))
                 selectedRow--;
-            if (inputHelper.KeyPressed(Keys.Down))
+            else if (inputHelper.KeyPressed(Keys.Down))
                 selectedRow++;
 
             selectedRow = MathHelper.Clamp(selectedRow, 0, grid.Height - 1);
             Position = grid.GetCellPosition(0, selectedRow);
+
+            if (inputHelper.KeyPressed(Keys.Left))
+                grid.ShiftRowLeft(selectedRow);
+            else if (inputHelper.KeyPressed(Keys.Right))
+                grid.ShiftRowRight(selectedRow);
         }
     }
 }
