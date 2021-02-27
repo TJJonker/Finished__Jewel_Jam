@@ -4,6 +4,7 @@ namespace Jewel_Jam
 {
     internal class JewelJamGameWorld : GameObjectList
     {
+        JewelCart jewelCart;
 
         const int GridWidth = 5;
         const int GridHeight = 10;
@@ -40,12 +41,16 @@ namespace Jewel_Jam
             scoreObject.Position = new Vector2(270, 30);
             AddChild(scoreObject);
 
+            jewelCart = new JewelCart(new Vector2(410, 230));
+            AddChild(jewelCart);
+
             Reset();
         }
 
         public void AddScore(int points)
         {
             Score += points;
+            jewelCart.PushBack();
         }
 
         public override void Reset()
