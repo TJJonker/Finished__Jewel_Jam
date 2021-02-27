@@ -30,6 +30,16 @@ namespace Jewel_Jam
             // Create new RowSelector and add it to playingField
             playingField.AddChild(new RowSelector(grid));
 
+            // Add background sprite for the score object
+            SpriteGameObject scoreFrame = new SpriteGameObject("spr_scoreframe");
+            scoreFrame.Position = new Vector2(20, 20);
+            AddChild(scoreFrame);
+
+            // Add the object that displays the score
+            ScoreGameObject scoreObject = new ScoreGameObject();
+            scoreObject.Position = new Vector2(270, 30);
+            AddChild(scoreObject);
+
             Reset();
         }
 

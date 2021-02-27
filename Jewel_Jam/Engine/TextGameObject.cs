@@ -5,7 +5,6 @@ namespace Jewel_Jam
 {
     internal class TextGameObject : GameObject
     {
-
         protected SpriteFont font;
         protected Color color;
         public string Text { get; set; }
@@ -35,10 +34,9 @@ namespace Jewel_Jam
 
             // Draw the text
             spriteBatch.DrawString(font, Text, GlobalPosition, color, 0f, origin, 1, SpriteEffects.None, 0);
-
         }
 
-        float OriginX
+        private float OriginX
         {
             get
             {
