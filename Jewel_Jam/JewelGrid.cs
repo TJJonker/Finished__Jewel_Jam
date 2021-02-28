@@ -77,9 +77,23 @@ namespace Jewel_Jam
                 }
             }
             if (combo == 2)
+            {
                 JewelJam.GameWorld.DoubleComboScored();
+                ExtendedGame.AssetManager.PlaySoundEffect("snd_double");
+            }
             else if (combo == 3)
+            {
                 JewelJam.GameWorld.TripleComboScored();
+                ExtendedGame.AssetManager.PlaySoundEffect("snd_triple");
+            }
+            else if(combo == 1)
+            {
+                ExtendedGame.AssetManager.PlaySoundEffect("snd_single");
+            }
+            else
+            {
+                ExtendedGame.AssetManager.PlaySoundEffect("snd_error");
+            }
         }
         
         private void RemoveJewel(int x, int y, int yStartForNewJewel)

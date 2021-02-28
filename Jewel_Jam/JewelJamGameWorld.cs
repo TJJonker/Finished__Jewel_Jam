@@ -70,6 +70,7 @@ namespace Jewel_Jam
             helpScreen = AddOverlay("spr_frame_help");
 
             GoToState(GameState.TitleScreen);
+            ExtendedGame.AssetManager.PlaySong("snd_music", true);
         }
 
         public void AddScore(int points)
@@ -108,7 +109,11 @@ namespace Jewel_Jam
             {
                 base.Update(gameTime);
                 if (jewelCart.GlobalPosition.X > Size.X - 230)
+                {
                     GoToState(GameState.GameOver);
+                    ExtendedGame.AssetManager.PlaySoundEffect("snd_gameover");
+                }
+
             }
         }
 
