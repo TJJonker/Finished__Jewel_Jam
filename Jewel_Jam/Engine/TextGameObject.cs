@@ -18,7 +18,7 @@ namespace Jewel_Jam
 
         public TextGameObject(string fontName, Color color, Alignment alignment = Alignment.Left)
         {
-            font = ExtendedGame.ContentManager.Load<SpriteFont>(fontName);
+            font = ExtendedGame.AssetManager.LoadFont(fontName);
             this.color = color;
             this.alignment = alignment;
 

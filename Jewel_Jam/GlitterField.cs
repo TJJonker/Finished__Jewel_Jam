@@ -16,7 +16,7 @@ namespace Jewel_Jam
 
         public GlitterField(Texture2D target, int numberOfGlitters, Rectangle targetRectangle)
         {
-            glitter = ExtendedGame.ContentManager.Load<Texture2D>("spr_glitter");
+            glitter = ExtendedGame.AssetManager.LoadSprite("spr_glitter");
             this.target = target;
             this.targetRectangle = targetRectangle;
             positions = new List<Vector2>();

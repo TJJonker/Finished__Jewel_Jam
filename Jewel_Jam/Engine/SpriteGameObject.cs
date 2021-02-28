@@ -13,7 +13,7 @@ namespace Jewel_Jam
 
         public SpriteGameObject(string spriteName)
         {
-            sprite = ExtendedGame.ContentManager.Load<Texture2D>(spriteName);
+            sprite = ExtendedGame.AssetManager.LoadSprite(spriteName);
             origin = Vector2.Zero;
         }
 

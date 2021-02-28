@@ -17,7 +17,7 @@ namespace Jewel_Jam
         protected static GameObjectList gameWorld;
 
         public static Random Random { get; private set; }
-        public static ContentManager ContentManager { get; private set; }
+        public static AssetManager AssetManager { get; private set; }
 
         public bool FullScreen
         {
@@ -40,7 +40,7 @@ namespace Jewel_Jam
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            ContentManager = Content;
+            AssetManager = new AssetManager(Content);
             FullScreen = false;
             gameWorld = new GameObjectList();
         }
